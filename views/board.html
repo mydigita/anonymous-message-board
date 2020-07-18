@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Anonymous Message</title>
+    <meta name="description" content="A full stack javascript project of freeCodeCamp, developed by: thetradecoder (Mamun Abdullah)">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/public/style.css">
+  </head>
+  <body>
+    <header class="bg-teal">   
+        <div id="boardTitle" class="text-center p-2"></div>      
+    </header>
+    <main class="container">      
+      <div><a href="https://fcc-anonymous-message-board-thetradecoder.glitch.me/" class="text-right nav-link">Home Page</a></div>
+    <div id="submitNewThread" class="pt-3">
+      <h3>Make a new thread:</h3>
+      <form id="newThread" method="post" action="/api/">
+        <textarea rows="3" cols="120" placeholder="Thread topic..." name="text" required="" aria-label="thread topic"></textarea><br>
+        <div class="d-flex flex-row btn-group">
+          <input class="flex-grow-1" type="text" placeholder="password to delete" aria-label="save password to delete" name="delete_password" required="">
+          <input class="flex-grow-1 btn btn-primary" type="submit" value="Make thread">
+        </div>
+      </form>
+    </div>
+    
+    <div id="boardDisplay"></div>
+    
+    </main>
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+      $(function() {
+        var currentBoard = window.location.pathname.slice(3);
+        var url = "/api/threads/" + currentBoard;
+        $('#boardTitle').html('<h1 class="text-light">Welcome to '+window.location.pathname+'</h1>')
+        $.ajax({
+          type: "GET",
+          url: url,
+          success: function(data)
+          {
+            var boardThreads= [];
+            //
+            // THIS ARRAY SET UP IS FOR CODE READABILITIES AND TESTING!
+            // THIS IS NOT WHAT IT WOULD LOOK LIKE TO GO LIVE
+            //
+            data.forEach(function(ele) {
+              console.log(ele);
+              //typeScript
+              var thread = ['<div class="thread pb-5">'];
+              thread.push('<div class="main">');
+              thread.push('<h3 class="pt-5">'+ele.text+'</h3>');
+              thread.push('<p class="id">thread id: '+ele._id+' ('+ele.created_on+')</p>');
+              thread.push('<div class="d-flex flex-row"><form id="reportThread"><input type="hidden" name="thread_id" value="'+ele._id+'"><input class="btn btn-warning btn-sm" type="submit" value="Report"></form>');
+              thread.push('<form id="deleteThread"><input type="hidden" value="'+ele._id+'" name="thread_id" required=""><div class="btn-group"><input class="input-control" type="text" placeholder="password" name="delete_password" required=""><input class="btn btn-danger btn-sm" type="submit" value="Delete"></div></form></div>');
+              
+              thread.push('</div><div class="replies">');
+              var hiddenCount = ele.replycount - 3;
+              if (hiddenCount < 1) { hiddenCount = 0 };
+              thread.push('<h5 class="pt-5">'+ele.replycount+' replies total ('+hiddenCount+' hidden)- <a href="'+ window.location.pathname+ '/' + ele._id+'">See the full thread here</a>.</h5>');
+              ele.replies.forEach(function(rep) {
+                thread.push('<div class="reply shadow p-2 mb-5">');
+                thread.push('<p class="text-justify">'+rep.text+'</p>');
+                thread.push('<p class="id">reply id: '+rep._id+' ('+rep.created_on+')</p>');
+                thread.push('<div class="d-flex flex-row pb-2"><form id="reportReply"><input type="hidden" name="thread_id" value="'+ele._id+'"><input type="hidden" name="reply_id" value="'+rep._id+'"><input type="submit" value="Report"></form>');
+                thread.push('<form id="deleteReply"><input type="hidden" value="'+ele._id+'" name="thread_id" required=""><input type="hidden" value="'+rep._id+'" name="reply_id" required=""><div class="btn-group"><input class="input-control" type="text" placeholder="password" name="delete_password" required=""><input type="submit" value="Delete"></div></form></div>');
+                thread.push('</div>');
+              });
+              thread.push('<div class="newReply bg-teal p-2">')
+              thread.push('<form action="/api/replies/'+currentBoard+'/" method="post" id="newReply">');
+              thread.push('<input type="hidden" name="thread_id" value="'+ele._id+'">');
+              thread.push('<textarea rows="5" cols="80" placeholder="Quick reply..." name="text" aria-label="reply" required=""></textarea><br>');
+              thread.push('<div class="btn-group"><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required=""><input class="btn btn-success form-control" type="submit" value="Submit"></div>')
+              thread.push('</form></div></div></div>')
+              boardThreads.push(thread.join(''));
+            });
+            $('#boardDisplay').html(boardThreads.join(''));
+          }
+        });
+        
+        $('#newThread').submit(function(){
+          $(this).attr('action', "/api/threads/" + currentBoard);
+        });
+        
+        $('#boardDisplay').on('submit','#reportThread', function(e) {
+          var url = "/api/threads/"+currentBoard;
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data) { alert(data) }
+          });
+          e.preventDefault();
+        });
+        $('#boardDisplay').on('submit','#reportReply', function(e) {
+          var url = "/api/replies/"+currentBoard;
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data) { alert(data) }
+          });
+          e.preventDefault();
+        });
+        $('#boardDisplay').on('submit','#deleteThread', function(e) {
+          var url = "/api/threads/"+currentBoard;
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data) { alert(data) }
+          });
+          e.preventDefault();
+        });        
+        $('#boardDisplay').on('submit','#deleteReply', function(e) {
+          var url = "/api/replies/"+currentBoard;
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data) { alert(data) }
+          });
+          e.preventDefault();
+        });              
+      });
+   </script>
+  </body>
+</html>

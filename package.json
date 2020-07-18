@@ -1,0 +1,38 @@
+{
+  "//1": "describes your app and its dependencies",
+  "//2": "https://docs.npmjs.com/files/package.json",
+  "//3": "updating this file will download and update your packages",
+  "name": "fcc-anonymous-message-board",
+  "author": "thetradecoder",
+  "version": "1.0.0",
+  "description": "A full stack javascrip project of freeCodeCamp",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "mongodb": "^3.5.9",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.0.1",
+    "zombie": "^6.1.4",
+    "helmet": "^3.23.1",
+    "shortid": "^2.2.15"
+  },
+  "engines": {
+    "node": "12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://glitch.com/edit/#!/fcc-anonymous-message-board-thetradecoder"
+  },
+  "keywords": [
+    "node",
+    "thetradecoder",
+    "express"
+  ],
+  "license": "MIT"
+}
