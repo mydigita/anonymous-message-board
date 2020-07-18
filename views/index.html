@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home- Anonymous message board</title>
+    <meta name="description" content="A full stack javascript project of freeCodeCamp, developed by: thetradecoder (Mamun Abdullah)">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="theTradeCoder, Mamun Abdullah">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/public/style.css">
+
+  </head>
+  <body>
+    <header class="bg-teal">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-teal container">
+        <a id="brand" href="#brand" class="navbar-brand text-light">thetradecoder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon text-light"></span>
+        </button>
+        <div id="menu" class="collapse navbar-collapse navbar-dark justify-content-end">
+          <div class="navbar-nav">
+            <a href="#about" class="nav-item nav-link text-light menu-font">About</a>
+            <a href="#threadPost" class="nav-item nav-link text-light menu-font">Create a Thread</a>
+            <a href="#threadReport" class="nav-item nav-link text-light menu-font">Report a Thread</a>
+            <a href="#threadDelete" class="nav-item nav-link text-light menu-font">Delete a Thread</a>
+            <a href="#replyPost" class="nav-item nav-link text-light menu-font">Send message</a>
+            <a href="#replyReport" class="nav-item nav-link text-light menu-font">Report a message</a>
+            <a href="#replyDelete" class="nav-item nav-link text-light menu-font">Delete a message</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <main class="container">
+   <h1 class="text-center pt-2"> Anonymous Message Board  </h1>
+    <hr style="margin: 50px 0">    
+    <div id="testui">
+      <h2>API Tests:</h2>
+      <div id="threadPost" class="pt-5 pb-5">
+        <h4>Make a new Thread (POST /api/threads/:board)</h4>
+        <form action="/api/threads/test" method="post" id="newThread">
+          <input class="form-control" type="text" aria-label="board name" placeholder="Board name" id="board1" name="board"  required=""><br>
+          <textarea  placeholder="Thread topic" name="text" required="" aria-label="thread topic"></textarea><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="thread password" type="text" placeholder="password to delete" name="delete_password" required=""><br>
+            <input class="btn btn-primary" type="submit" value="Make new thread">
+          </div>
+        </form>
+      </div>
+      
+ 
+      <div id="threadReport" class="pt-5 pb-5">
+        <h4>Report a Thread (PUT /api/threads/:board)</h4>
+        <form id="reportThread">
+          <input class="form-control" type="text" aria-label="board name to report" placeholder="Board name" id="board2" name="board" required=""><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="reporting thread id" type="text" placeholder="Thread id to report" name="thread_id" required=""><br>
+            <input  class="btn btn-warning" type="submit" value="Report thread"></div>
+        </form>
+      </div>
+      
+   
+      <div id="threadDelete" class="pt-5 pb-5">
+        <h4>Delete a Thread (DELETE /api/threads/:board)</h4>
+        <form id="deleteThread">
+          <input class="form-control" type="text" placeholder="Board name" id="board3" aria-label="board3" name="board" required=""><br>
+          <input class="form-control" aria-label="delete-thread-id" type="text" placeholder="Thread id to delete" name="thread_id" required=""><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="thread delete password" type="text" placeholder="password" name="delete_password" required=""><br>
+            <input class="btn btn-danger" type="submit"  value="Delete thread">
+          </div>
+        </form>
+      </div>
+      
+        
+        
+      <div id="replyPost" class="pt-5 pb-5">
+        <h4>New reply (POST /api/replies/:board)</h4>
+        <form action="/api/threads/test" method="post" id="newReply">
+          <input class="form-control" type="text" placeholder="Board" id="board4" name="board" aria-label="board4" required=""><br>
+          <input class="form-control" aria-label="reply-thread-id" type="text" placeholder="Thread id to reply" name="thread_id" required=""><br>
+          <textarea class="form-control" aria-label="reply-text" placeholder="Reply text" name="text" required=""></textarea><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="reply delete password" type="text" placeholder="Password to delete" name="delete_password" required=""><br>
+            <input class="btn btn-primary" type="submit"  value="Reply">
+          </div>
+        </form>
+      </div>
+      
+      
+        <div id="replyReport" class="pt-5 pb-5">
+        <h4>Report a reply (PUT /api/replies/:board)</h4>
+        <form id="reportReply">
+          <input class="form-control" type="text" placeholder="Board name" id="board5" aria-label="board5" name="board" required=""><br>
+          <input class="form-control" aria-label="reply report thread" type="text" placeholder="Thread id" name="thread_id" required=""><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="reply id report" type="text" placeholder="Reply id to report" name="reply_id" required=""><br>
+            <input class="btn btn-warning"  type="submit" value="Report reply">
+          </div>
+        </form>
+      </div>      
+   
+      <div id="replyDelete" class="pt-5 pb-5">
+        <h4>Delete a reply (DELETE /api/replies/:board)</h4>
+        <form id="deleteReply">
+          <input class="form-control" type="text" placeholder="Board name" id="board6" name="board" aria-label="board6" required=""><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="reply-delete-thread-id" type="text" placeholder="Thread id" name="thread_id" required="">
+            <input class="form-control" aria-label="reply id to delete" type="text" placeholder="Reply id to delete" name="reply_id" required="">
+          </div><br>
+          <div class="d-flex flex-row">
+            <input class="form-control" aria-label="password-to-delete-reply" type="text" placeholder="password" name="delete_password" required=""><br>
+            <input class="btn btn-danger" type="submit" value="Delete reply"></div>
+        </form>
+      </div>
+    </div>
+      
+     <div id="userstories">
+      <h2><a href="/b/general/">Go to testing <i>'/b/general/'</i> board</a></h2>
+    </div>
+    </main>
+    
+    
+    <footer>
+      <div class="d-flex flex-row flex-wrap justify-content-center container">
+        <div id="about" class="flex-grow-1">
+          <h3>About </h3>
+          <p>- A Full Stack Javascript App</p>
+          <p>-<a href="https://www.freecodecamp.org/" class="text-primary"> FCC Information Security And Quality Assurance Project</a></p>
+          <p>- Anonymous message app</p>
+                 
+        </div>
+        <div id="dev-info" class="flex-grow-1">
+          <h3>App Developer</h3>
+          - <a href="https://www.linkedin.com/in/thetradecoder/" class="text-primary">thetradecoder</a>       
+        </div>  
+        
+      </div>
+    </footer>
+  
+    
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+      $(function() {
+        $('#newThread').submit(function(){
+          var board = $('#board1').val();
+          $(this).attr('action', "/api/threads/" + board);
+        });
+        $('#newReply').submit(function(){
+          var board = $('#board4').val();
+          $(this).attr('action', "/api/replies/" + board);
+        });
+        $('#reportThread').submit(function(e){
+          var url = "/api/threads/"+$('#board2').val();
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+        $('#deleteThread').submit(function(e){
+          var url = "/api/threads/"+$('#board3').val();
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+        $('#reportReply').submit(function(e){
+          var url = "/api/replies/"+$('#board5').val();
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+        $('#deleteReply').submit(function(e){
+          var url = "/api/replies/"+$('#board6').val();
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+      });
+   </script>
+  </body>
+</html>

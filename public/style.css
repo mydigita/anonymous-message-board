@@ -1,0 +1,61 @@
+* {
+  color:#333333;
+  box-sizing:border-box;
+}
+body, html{
+  margin:0;
+  padding:0;
+  scroll-behavior:smooth;
+}
+
+.bg-teal{
+  background-color:teal
+}
+
+code{
+  color:#CF000F;
+}
+.menu-font{
+  font-size:1.1rem !important;
+  padding-left:10px !important;
+}
+a#brand {
+  padding-left:10px;
+}
+form{
+  max-width:600px;
+}
+ textarea{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border:1px solid silver;
+  border-radius:5px;
+}
+
+footer{
+  background-color:#150430 ;
+  min-height:150px;
+  margin-top:3rem;
+  padding-bottom:3rem;
+}
+
+footer *{
+  color:silver
+}
+footer div{
+  padding:1rem;
+}
+div.navbar-nav a:hover{
+  background-color:blue !important;
+}
+.thread{
+  max-width:600px;
+}
+.input-control{
+  margin-left:10px;
+  border:1px solid silver;
+}
+ nav.container{
+  padding:0 !important;
+  }
