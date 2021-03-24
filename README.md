@@ -2,4 +2,4 @@
 ------
 ## project : Anonymous Message Board
 
-### by: theTradeCoder
+### by: tradecoder
